@@ -13,5 +13,9 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index');
+    $router->resource('cate', 'CateController');
+    $router->resource('config', 'ConfigController');
+    $router->resource('slideshow', 'SlideshowController');
+    $router->resource('label', 'LabelController');
 
 });
