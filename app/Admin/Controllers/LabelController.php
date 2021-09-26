@@ -64,8 +64,10 @@ class LabelController extends AdminController
             $form->display('id');
             $form->text('name')->required();
             $form->text('name_en')->required();
-            $form->image('icon')->autoUpload()->uniqueName()->required();
+            $form->image('icon')->autoUpload()->uniqueName();
             $form->number('sort')->value(0)->min(0)->max(99999);
+            $form->disableViewButton();
+            $form->disableViewCheck();
             $form->display('created_at');
             $form->display('updated_at');
         });
