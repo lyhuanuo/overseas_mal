@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Repositories\Good;
+use App\Models\Label;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
@@ -68,15 +69,19 @@ class GoodController extends AdminController
     protected function form()
     {
         return Form::make(new Good(), function (Form $form) {
+            $cateModel = config('admin.database.cate_model');
             $form->display('id');
             $form->text('name');
             $form->text('name_en');
             $form->text('item_no');
-            $form->select('cate_id')->options(function(){
-
-            })->required();
+            $form->select('cate_id')->options($cateModel::selectOptions())->required();
             $form->select('label_id')->options(function(){
-
+                $labelList = Label::orderBy('sort')->get(['id','name'])->toArray();
+                $data = [];
+                foreach($labelList as $k => $v){
+                    $data[$v['id']] = $v['name'];
+                }
+                return $data;
             });
             $form->image('img_src')->autoUpload()->uniqueName()->required();
             $form->text('keywords');
@@ -85,12 +90,17 @@ class GoodController extends AdminController
             $form->textarea('descr_en');
 
             $form->multipleImage('pictures')->autoUpload();
-            $form->decimal('price')->min(0)->value(0.00);
+            $form->currency('price')->value(0.00)->symbol('￥');
             $form->number('stock')->min(0)->value(0);
             $form->number('sort')->value(0);
             $form->editor('content');
             $form->editor('content_en');
+            $form->saving(function($form){
 
+            });
+
+            $form->disableViewCheck();
+            $form->disableViewButton();
             $form->display('created_at');
             $form->display('updated_at');
         });

@@ -1,8 +1,9 @@
-<?php 
+<?php
 return [
     'labels' => [
         'Good' => '商品管理',
         'good' => '商品管理',
+        'goods' => '商品管理',
     ],
     'fields' => [
         'name' => '商品名称',

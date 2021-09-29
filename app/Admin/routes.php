@@ -18,5 +18,6 @@ Route::group([
     $router->resource('slideshow', 'SlideshowController');
     $router->resource('label', 'LabelController');
     $router->resource('goods', 'GoodController');
+    $router->resource('order', 'OrderController');
 
 });
