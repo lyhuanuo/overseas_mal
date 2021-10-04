@@ -11,6 +11,15 @@ class Good extends Model
 	use HasDateTimeFormatter;
     use SoftDeletes;
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::saved(function($model){
+            Good::where('id',$model->id)->where('stock',0)->update(['status'=>2]);
+
+        });
+    }
+
     public function cateItem()
     {
         return $this->belongsTo(Cate::class,'cate_id','id');
@@ -24,10 +33,6 @@ class Good extends Model
     public function getPicturesAttribute($val)
     {
         return $val ? json_decode($val,true) : [];
-    }
-    public function setPicturesAttribute($val)
-    {
-        return $val ? json_encode($val,JSON_UNESCAPED_UNICODE) : '';
     }
 
 }

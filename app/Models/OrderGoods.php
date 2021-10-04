@@ -10,10 +10,13 @@ class OrderGoods extends Model
 {
 	use HasDateTimeFormatter;
     protected $table = 'order_goods';
+    public $fillable = [
+        'order_id','goods_id','price','num','total_price',
+    ];
 
     public function goodsItem()
     {
-        return $this->belongsTo(Good::class,'goods_id','id');
+        return $this->belongsTo(Good::class,'goods_id','id')->withTrashed();
     }
 
 

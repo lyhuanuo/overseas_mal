@@ -83,9 +83,17 @@ CSS
             $form->display('id');
             $form->text('title')->required();
             $form->text('title_en')->required();
-            $form->select('parent_id')->options($cateModel::selectOptions())->required();
-            $form->image('icon')->autoUpload();
+            $form->select('parent_id')->options($cateModel::selectOptions())->required()->saving(function($v){
+                return intval($v);
+            });
+            $form->image('icon')->autoUpload()->uniqueName();
             $form->number('order')->value(0)->required();
+            $form->saving(function(Form $form){
+                $parentId = CateModel::where('id',$form->parent_id)->value('parent_id');
+                if($parentId != 0){
+                    return $form->response()->error('暂只支持二级分类~');
+                }
+            });
 
             $form->disableViewButton();
             $form->disableViewCheck();
